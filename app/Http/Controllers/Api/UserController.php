@@ -6,20 +6,37 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Http\Resources\UserResource;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
-    /**
-     * index
-     *
-     * @return void
-     */
     public function index()
     {
-        //get posts
-        $posts = User::latest()->paginate(5);
 
-        //return collection of posts as a resource
-        return new UserResource(true, 'List Data Posts', $posts);
+        $users = User::latest()->paginate(5);
+        return new UserResource(true, 'List Data User', $users);
+    }
+
+    public function store(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name'     => 'required',
+            'role'     => 'required',
+            'phone'   => 'required',
+            'email'   => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+        $users = User::create([
+            'name'     => $request->name,
+            'role'     => $request->role,
+            'phone'   => $request->phone,
+            'email'   => $request->email,
+        ]);
+
+        return new UserResource(true, 'Data Users Berhasil Ditambahkan!', $users);
     }
 }

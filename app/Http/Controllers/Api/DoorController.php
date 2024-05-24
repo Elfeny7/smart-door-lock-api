@@ -6,20 +6,37 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Door;
 use App\Http\Resources\DoorResource;
+use Illuminate\Support\Facades\Validator;
 
 class DoorController extends Controller
 {
-    /**
-     * index
-     *
-     * @return void
-     */
+    
     public function index()
     {
-        //get posts
-        $posts = Door::latest()->paginate(5);
+        $doors = Door::latest()->paginate(5);
+        return new DoorResource(true, 'List Data Doors', $doors);
+    }
 
-        //return collection of posts as a resource
-        return new DoorResource(true, 'List Data Posts', $posts);
+    public function store(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name'     => 'required',
+            'location'     => 'required',
+            'class_name'   => 'required',
+            'description'   => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+        $doors = Door::create([
+            'name'     => $request->name,
+            'location'     => $request->location,
+            'class_name'   => $request->class_name,
+            'description'   => $request->description,
+        ]);
+
+        return new DoorResource(true, 'Data Door Berhasil Ditambahkan!', $doors);
     }
 }
