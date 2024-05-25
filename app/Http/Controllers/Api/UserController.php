@@ -44,4 +44,27 @@ class UserController extends Controller
     {
         return new UserResource(true, 'Data User Ditemukan!', $user);
     }
+
+    public function update(Request $request, User $user)
+    {
+        $validator = Validator::make($request->all(), [
+            'name'     => 'required',
+            'role'     => 'required',
+            'phone'   => 'required',
+            'email'   => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+        $user->update([
+            'name'     => $request->name,
+            'role'   => $request->role,
+            'phone'   => $request->phone,
+            'email'   => $request->email,
+        ]);
+
+        return new UserResource(true, 'Data User Berhasil Diubah!', $user);
+    }
 }

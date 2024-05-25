@@ -44,4 +44,27 @@ class DoorController extends Controller
     {
         return new DoorResource(true, 'Data Door Ditemukan!', $door);
     }
+
+    public function update(Request $request, Door $door)
+    {
+        $validator = Validator::make($request->all(), [
+            'name'     => 'required',
+            'location'     => 'required',
+            'class_name'   => 'required',
+            'description'   => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+        $door->update([
+            'name'     => $request->name,
+            'location'   => $request->location,
+            'class_name'   => $request->class_name,
+            'description'   => $request->description,
+        ]);
+
+        return new DoorResource(true, 'Data Door Berhasil Diubah!', $door);
+    }
 }
