@@ -67,4 +67,10 @@ class DoorController extends Controller
 
         return new DoorResource(true, 'Data Door Berhasil Diubah!', $door);
     }
+
+    public function destroy(Door $door)
+    {
+        $door->delete();
+        return new DoorResource(true, 'Data Door Berhasil Dihapus!', null);
+    }
 }

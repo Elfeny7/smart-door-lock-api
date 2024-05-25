@@ -67,4 +67,10 @@ class UserController extends Controller
 
         return new UserResource(true, 'Data User Berhasil Diubah!', $user);
     }
+
+    public function destroy(User $user)
+    {
+        $user->delete();
+        return new UserResource(true, 'Data User Berhasil Dihapus!', null);
+    }
 }
