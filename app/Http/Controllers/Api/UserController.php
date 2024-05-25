@@ -30,13 +30,18 @@ class UserController extends Controller
             return response()->json($validator->errors(), 422);
         }
 
-        $users = User::create([
+        $user = User::create([
             'name'     => $request->name,
             'role'     => $request->role,
             'phone'   => $request->phone,
             'email'   => $request->email,
         ]);
 
-        return new UserResource(true, 'Data Users Berhasil Ditambahkan!', $users);
+        return new UserResource(true, 'Data Users Berhasil Ditambahkan!', $user);
+    }
+
+    public function show(User $user)
+    {
+        return new UserResource(true, 'Data User Ditemukan!', $user);
     }
 }

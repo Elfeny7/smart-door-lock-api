@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Validator;
 
 class DoorController extends Controller
 {
-    
+
     public function index()
     {
         $doors = Door::latest()->paginate(5);
@@ -30,13 +30,18 @@ class DoorController extends Controller
             return response()->json($validator->errors(), 422);
         }
 
-        $doors = Door::create([
+        $door = Door::create([
             'name'     => $request->name,
             'location'     => $request->location,
             'class_name'   => $request->class_name,
             'description'   => $request->description,
         ]);
 
-        return new DoorResource(true, 'Data Door Berhasil Ditambahkan!', $doors);
+        return new DoorResource(true, 'Data Door Berhasil Ditambahkan!', $door);
+    }
+
+    public function show(Door $door)
+    {
+        return new DoorResource(true, 'Data Door Ditemukan!', $door);
     }
 }
