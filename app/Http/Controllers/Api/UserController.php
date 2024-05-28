@@ -22,6 +22,7 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             'name'     => 'required',
             'role'     => 'required',
+            'pin'     => 'required',
             'phone'   => 'required',
             'email'   => 'required',
         ]);
@@ -33,6 +34,7 @@ class UserController extends Controller
         $user = User::create([
             'name'     => $request->name,
             'role'     => $request->role,
+            'pin'     => $request->pin,
             'phone'   => $request->phone,
             'email'   => $request->email,
         ]);
@@ -50,6 +52,7 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             'name'     => 'required',
             'role'     => 'required',
+            'pin'     => 'required',
             'phone'   => 'required',
             'email'   => 'required',
         ]);
@@ -61,6 +64,7 @@ class UserController extends Controller
         $user->update([
             'name'     => $request->name,
             'role'   => $request->role,
+            'pin'   => $request->pin,
             'phone'   => $request->phone,
             'email'   => $request->email,
         ]);
