@@ -15,4 +15,9 @@ class Door extends Model
         'class_name',
         'description',
     ];
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'user_door')->using(UserDoor::class);
+    }
 }

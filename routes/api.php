@@ -20,4 +20,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::apiResource('/users', App\Http\Controllers\Api\UserController::class);
 Route::apiResource('/doors', App\Http\Controllers\Api\DoorController::class);
+Route::apiResource('/user-door', App\Http\Controllers\Api\UserDoorController::class);
 

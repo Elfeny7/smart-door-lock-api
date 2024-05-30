@@ -16,4 +16,9 @@ class User extends Model
         'phone',
         'email',
     ];
+
+    public function doors()
+    {
+        return $this->belongsToMany(Door::class, 'user_door')->using(UserDoor::class);
+    }
 }
