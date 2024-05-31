@@ -13,7 +13,7 @@ class DoorController extends Controller
 
     public function index()
     {
-        $doors = Door::latest()->paginate(5);
+        $doors = Door::latest()->get();
         return new DoorResource(true, 'List Data Doors', $doors);
     }
 
