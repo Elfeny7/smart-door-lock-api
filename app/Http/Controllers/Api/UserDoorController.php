@@ -11,7 +11,7 @@ use App\Models\Door;
 class UserDoorController extends Controller
 {
 
-    public function store(Request $request)
+    public function attach(Request $request)
     {
         $validatedData = $request->validate([
             'user_id' => 'required|exists:users,id',
