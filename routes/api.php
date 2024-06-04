@@ -24,4 +24,5 @@ Route::apiResource('/doors', App\Http\Controllers\Api\DoorController::class);
 Route::post('/user-door/attach',[UserDoorController::class, 'attach']);
 Route::post('/user-door/detach',[UserDoorController::class, 'detach']);
 Route::get('/user-door/{doorId}/users',[UserDoorController::class, 'usersByDoor']);
+Route::apiResource('/logs', App\Http\Controllers\Api\LogController::class);
 
