@@ -11,7 +11,6 @@ class Log extends Model
     protected $fillable = [
         'name',
         'role',
-        'date_time',
         'class_name',
         'image',
     ];

@@ -22,7 +22,6 @@ class LogController extends Controller
         $validator = Validator::make($request->all(), [
             'name'       => 'required',
             'role'       => 'required',
-            'date_time'  => 'required',
             'class_name' => 'required',
             'image'      => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
@@ -37,7 +36,6 @@ class LogController extends Controller
         $log = Log::create([
             'name'       => $request->name,
             'role'       => $request->role,
-            'date_time'  => $request->date_time,
             'class_name' => $request->class_name,
             'image'      => $image->hashName(),
         ]);
