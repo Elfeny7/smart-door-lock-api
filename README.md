@@ -1,64 +1,98 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# Deploy laravel backend to GCP  
+### Install Dependency  
+1. Buat instance, centang http, pilih ubuntu 24 x86/x64  
+<img src="tutorials/0.png" width="500"/>  
+  
+2. Buat firewall rule untuk port 3000 dan 8000
+<img src="tutorials/1.png" width="500"/>  
+  
+3. Masuk ssh, lalu update package  
+```sudo apt-get update```  
+```sudo apt-get upgrade```  
+  
+4. Install apache  
+```sudo apt-get install apache2```  
+restart apache dengan  
+```sudo service apache2 restart```  
+  
+5. install zip  
+```sudo apt-get install zip unzip```  
+  
+6. install dependency lainnya  
+```sudo apt install phpmyadmin php-mbstring php-zip php-gd php-json php-curl```  
+  
+7. install mysql  
+```sudo apt install mysql-server```  
+  
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+### Membuat Database dan Konfigurasi  
+  
+8. Masuk ke mysql  
+```sudo mysql -u root```   
+  
+9. Buat Database (dalam kasus ini db_smart_door_lock)  
+```CREATE DATABASE db_smart_door_lock;```  
+Cek database  
+```SHOW DATABASES;```  
+  
+10. Buat User dan passwordnya  
+```CREATE USER `ikmal`@`localhost` IDENTIFIED BY 'ikmal123';```  
+  
+11. Izinkan user pada database  
+```GRANT ALL PRIVILEGES ON db_smart_door_lock.* TO `ikmal`@`localhost`;```  
+lalu  
+```FLUSH PRIVILEGES;```  
+lalu keluar dari mysql  
+```exit;```  
 
-## About Laravel
+### Clone Repo dan Migrate  
+12. cd ke ```/var/www/html``` lalu clone repo api  
+  
+13. cd ke repo dan ubah .env.example menjadi .env  
+```sudo cp .env.example .env```  
+  
+14. sesuaikan isi .env sesuai dengan database, username, dan password  
+```sudo nano .env```  
+  
+15. kembali ke path utama dengan cd, lalu install composer  
+```curl -sS https://getcomposer.org/installer | php```  
+```sudo mv composer.phar /usr/local/bin/composer```  
+```sudo chmod +x /usr/local/bin/composer```  
+cek jika composer sudah terinstall  
+```composer -v```  
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+16. Set ownership project  
+```sudo chown www-data:www-data -R /var/www/html/smart-door-lock-api```   
+  
+17. cd ke project, lalu composer update, lalu composer install
+```cd /var/www/html/smart-door-lock-api/```  
+```sudo composer update```  
+```sudo composer install```  
+  
+18. generate key, jwt secret (jika menggunakan jwt), dan migrate
+```sudo php artisan key:generate```  
+```sudo php artisan jwt:secret```  
+```sudo php artisan migrate```  
+  
+19. Jalankan server dengan host 0.0.0.0  
+```sudo php artisan serve --host=0.0.0.0```  
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Jika muncul error fatal: detected dubious ownership in repository at '/var/www/html/smart-door-lock-api'  
+```git config --global --add safe.directory /var/www/html/smart-door-lock-api```  
+```git config --global --get safe.directory```  
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+# Deploy NextJS to GCP  
+1. Install nodejs  
+```sudo apt install nodejs```  
+  
+2. Install npm  
+```sudo apt install npm```  
 
-## Learning Laravel
+3. Buat .env.local, ubah localhost dengan 'eksternal-ip' vm 
+```sudo nano .env.local```  
+```NEXT_PUBLIC_API_BACKEND = 'http://localhost:8000'```  
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+4. install dependency project  
+```sudo npm install```  
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+5. 
