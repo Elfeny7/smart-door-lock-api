@@ -95,4 +95,52 @@ Jika muncul error fatal: detected dubious ownership in repository at '/var/www/h
 4. install dependency project  
 ```sudo npm install```  
 
-5. 
+5. jalankan  
+```sudo npm run dev```  
+
+# CI/CD dengan Cloud Build (GCP)  
+1. Buat Host Connection lalu hubungkan dengan akun github  
+  
+2. Hubungkan dengan repository dengan klik 'LINK REPOSITORY'
+
+3. Buka Trigger, lalu Create Trigger, Trigger yang paling dekat adalah Taiwan
+
+4. Event pilih push to a branch, Pilih 2nd gen dan pilih Cloud Build configuration file (cloudbuild.yaml)  
+
+5. Buat file cloudbuild.yaml di direktori root project, kurang lebih isi dari cloudbuild.yaml adalah sbb:  
+
+```
+steps:
+  # Step 0: Install mysqli (php-mysql) package
+  # - name: 'gcr.io/cloud-builders/gcloud'
+  #   args:
+  #     - 'compute'
+  #     - 'ssh'
+  #     - 'smart-door-lock-vm'  # compute engine vm name
+  #     - '--zone=asia-southeast2-a'  # compute engine zone
+  #     - '--command=sudo apt-get update && sudo apt-get install -y mysql-server php-mysql && sudo systemctl restart apache2'
+
+  # Step 1: Deploy the application to Compute Engine VM
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args:
+      - 'compute'
+      - 'ssh'
+      - 'smart-door-lock-vm'  # compute engine vm name
+      - '--zone=asia-southeast2-a'  # compute engine zone instance
+      - '--command=cd /var/www/html/smart-door-lock-api && git pull origin main'
+    dir: '/var/www/html/smart-door-lock-api'  # location cloned project
+
+  # Step 2: Database migration
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args:
+      - 'compute'
+      - 'ssh'
+      - 'smart-door-lock-vm'  # compute engine vm name
+      - '--zone=asia-southeast2-a'  # compute engine zone instance instance
+      - '--command=cd /var/www/html/smart-door-lock-api && php artisan migrate --force'
+    dir: '/var/www/html/smart-door-lock-api'  # location cloned project
+# Optionally, you can specify the timeout for the entire build process
+timeout: '1200s'
+```
+
+6. Lalu push projek ke main, nanti projek yang ada pada vm otomatis menjalankan command-command tersebut dan alhasil kode otomatis terupdate.
