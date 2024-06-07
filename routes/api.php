@@ -26,6 +26,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::post('/register', App\Http\Controllers\Api\RegisterController::class)->name('register');
+Route::post('/login', App\Http\Controllers\Api\LoginController::class)->name('login');
+Route::post('/logout', App\Http\Controllers\Api\LogoutController::class)->name('logout');
+Route::middleware('auth:api')->get('/admin', function (Request $request) {
+    return $request->user();
+});
 Route::apiResource('/users', UserController::class);
 Route::apiResource('/doors', DoorController::class);
 Route::post('/user-door/attach', [UserDoorController::class, 'attach']);
