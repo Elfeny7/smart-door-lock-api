@@ -19,7 +19,7 @@ class UserDoorController extends Controller
         ]);
         $user = User::findOrFail($validatedData['user_id']);
         $user->doors()->attach($validatedData['door_id']);
-        
+
         return response()->json(['message' => 'User Door relation created successfully'], 201);
     }
 
@@ -41,5 +41,27 @@ class UserDoorController extends Controller
         $door = Door::with('users')->findOrFail($doorId);
         $users = $door->users;
         return response()->json($users, 200);
+    }
+
+    public function checkAccess(Request $request)
+    {
+        $validatedData = $request->validate([
+            'pin' => 'required|string',
+            'door_id' => 'required|exists:doors,id',
+        ]);
+
+        $user = User::where('pin', $validatedData['pin'])->first();
+
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+
+        $hasAccess = $user->doors()->where('door_id', $validatedData['door_id'])->exists();
+
+        if ($hasAccess) {
+            return response()->json(['message' => 'Access granted'], 200);
+        } else {
+            return response()->json(['message' => 'Access denied'], 403);
+        }
     }
 }
