@@ -32,14 +32,22 @@ Route::middleware('auth:api')->get('/admin', function (Request $request) {
 Route::post('/register', App\Http\Controllers\Api\RegisterController::class)->name('register');
 Route::post('/login', App\Http\Controllers\Api\LoginController::class)->name('login');
 Route::post('/logout', App\Http\Controllers\Api\LogoutController::class)->name('logout');
+
 Route::apiResource('/users', UserController::class);
+Route::get('/user/{id}','App\Http\Controllers\Api\UserController@getUserById');
+Route::get('/user/pin/{pin}','App\Http\Controllers\Api\UserController@getUserByPin');
+Route::get('/user-door/{doorId}/users', [UserDoorController::class, 'usersByDoor']);
+
 Route::apiResource('/doors', DoorController::class);
+Route::get('/door/{id}','App\Http\Controllers\Api\DoorController@getDoorById');
+
 Route::post('/user-door/attach', [UserDoorController::class, 'attach']);
 Route::post('/user-door/detach', [UserDoorController::class, 'detach']);
 Route::post('/check-access', [UserDoorController::class, 'checkAccess']);
-Route::get('/user-door/{doorId}/users', [UserDoorController::class, 'usersByDoor']);
-Route::apiResource('/logs', LogController::class);
+
 Route::get('/total-users', [DashboardController::class, 'totalUsers']);
 Route::get('/user-accessed-doors', [DashboardController::class, 'userAccessedDoors']);
 Route::get('/total-doors', [DashboardController::class, 'totalDoors']);
 Route::get('/new-users-today', [DashboardController::class, 'newUsersToday']);
+
+Route::apiResource('/logs', LogController::class);

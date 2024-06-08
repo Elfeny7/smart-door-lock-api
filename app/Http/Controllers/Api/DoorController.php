@@ -73,4 +73,10 @@ class DoorController extends Controller
         $door->delete();
         return new DoorResource(true, 'Data Door Berhasil Dihapus!', null);
     }
+
+    public function getDoorById($id)
+    {
+        $door = Door::findOrFail($id);
+        return new DoorResource(true, 'Data door Ditemukan!', $door);
+    }
 }

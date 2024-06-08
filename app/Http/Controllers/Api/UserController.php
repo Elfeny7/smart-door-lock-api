@@ -77,4 +77,21 @@ class UserController extends Controller
         $user->delete();
         return new UserResource(true, 'Data User Berhasil Dihapus!', null);
     }
+
+    public function getUserById($id)
+    {
+        $user = User::findOrFail($id);
+        return new UserResource(true, 'Data User Ditemukan!', $user);
+    }
+
+    public function getUserByPin($pin)
+    {
+        $user = User::where('pin', $pin)->first();
+
+        if (!$user) {
+            return response()->json(['message' => 'Pengguna dengan PIN tersebut tidak ditemukan'], 404);
+        }
+
+        return new UserResource(true, 'Data Pengguna Ditemukan berdasarkan PIN!', $user);
+    }
 }
