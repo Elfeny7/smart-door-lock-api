@@ -73,6 +73,7 @@ cek jika composer sudah terinstall
 ```sudo php artisan key:generate```  
 ```sudo php artisan jwt:secret```  
 ```sudo php artisan migrate```  
+```sudo php artisan storage:link```  
   
 19. Jalankan server dengan host 0.0.0.0  
 ```sudo php artisan serve --host=0.0.0.0```  
