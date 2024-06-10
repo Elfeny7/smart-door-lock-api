@@ -23,7 +23,7 @@ steps:
     args:
       - 'compute'
       - 'ssh'
-      - 'smart-door-lock-vm'com
+      - 'smart-door-lock-vm'
       - '--zone=asia-southeast2-a'
       - '--command=cd /var/www/html/smart-door-lock-api && composer udpate --no-dev --prefer-dist'
     dir: '/var/www/html/smart-door-lock-api'
