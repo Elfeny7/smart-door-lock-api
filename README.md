@@ -145,3 +145,61 @@ timeout: '1200s'
 ```
 
 6. Lalu push projek ke main, nanti projek yang ada pada vm otomatis menjalankan command-command tersebut dan alhasil kode otomatis terupdate.
+
+# Membuat Baris dari MySQL ke Tabel BigQuery (GCP)
+
+1. Buat dataset dan tabel pada big query  
+  
+2. Pada project, masukan perintah   
+```composer require google/cloud-bigquery```  
+jika versi php tidak mumpuni, install versi lama dengan cara buka composer.json, pada require, tambnahkan  
+"google/cloud-bigquery": "^1.3"  
+
+3. install dependensi
+```composer update```  
+```composer install```  
+
+4. Pada bagian .env tambahkan berikut  
+GOOGLE_APPLICATION_CREDENTIALS=/path/to/your/keyfile.json  
+GOOGLE_PROJECT_ID=YOUR-PROJECT-ID  
+GOOGLE_DATASET_ID=YOUR-DATASET-ID  
+GOOGLE_TABLE_ID=YOUR-TABLE-ID  
+
+5. File json tersebut didapat dari console gcp, iam and admin, service account, pilih account yg digunakan, pilih keys, create key, lalu json.  
+
+6. Simpan json tersebut, karena ini file secret, anda tidak bisa push dengan json tersebut, nanti kita letakkan ke server secara manual. nanti letakkan /var/www/html/project/key.json  
+
+7. Buat file baru pada app/Providers/AppServiceProvider.php dan tambahkan kode berikut:  
+```
+<?php
+
+namespace App\Providers;
+
+use Google\Cloud\BigQuery\BigQueryClient;
+use Illuminate\Support\ServiceProvider;
+
+class BigQueryServiceProvider extends ServiceProvider
+{
+    public function register()
+    {
+        $this->app->singleton(BigQueryClient::class, function ($app) {
+            return new BigQueryClient([
+                'keyFilePath' => env('GOOGLE_APPLICATION_CREDENTIALS'),
+                'projectId' => env('GOOGLE_PROJECT_ID'),
+            ]);
+        });
+    }
+
+    public function boot()
+    {
+        //
+    }
+}
+```  
+
+8. Daftarkan service provider tadi ke config/app.php lalu bagian 'providers' => [ ]  
+```App\Providers\BigQueryServiceProvider::class,```  
+
+9. Lalu tambahkan kode seperti yang ada pada LogController.php pada repository ini. Perubahan tersebut adalah menambahkan fungsi untuk menambahkan baris pada bigquery table ketika fungsi store atau post dijalankan, jadi menambahkan baris pada database server sekaligus ke big query.  
+
+10. Push ke main agar di server juga berubah, saya ingatkan lagi jangan lupa mengubah path dari file key.json tadi pada file .env

@@ -18,7 +18,27 @@ steps:
       - '--command=cd /var/www/html/smart-door-lock-api && git pull origin main'
     dir: '/var/www/html/smart-door-lock-api'  # Specify the directory where your source code is cloned
 
-  # Step 2: Database migration
+  # Step 2: Run composer update to ensure dependencies are updated to the latest compatible versions
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args:
+      - 'compute'
+      - 'ssh'
+      - 'smart-door-lock-vm'com
+      - '--zone=asia-southeast2-a'
+      - '--command=cd /var/www/html/smart-door-lock-api && composer udpate --no-dev --prefer-dist'
+    dir: '/var/www/html/smart-door-lock-api'
+
+  # Step 3: Run composer install to ensure dependencies are installed
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args:
+      - 'compute'
+      - 'ssh'
+      - 'smart-door-lock-vm'com
+      - '--zone=asia-southeast2-a'
+      - '--command=cd /var/www/html/smart-door-lock-api && composer install --no-dev --prefer-dist'
+    dir: '/var/www/html/smart-door-lock-api'
+
+  # Step 4: Database migration
   - name: 'gcr.io/cloud-builders/gcloud'
     args:
       - 'compute'
