@@ -43,6 +43,13 @@ class UserDoorController extends Controller
         return response()->json($users, 200);
     }
 
+    public function doorsByUser($userId)
+    {
+        $user = User::with('doors')->findOrFail($userId);
+        $doors = $user->doors;
+        return response()->json($doors, 200);
+    }
+
     public function checkAccess(Request $request)
     {
         $validatedData = $request->validate([

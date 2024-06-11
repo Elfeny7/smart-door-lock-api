@@ -37,13 +37,14 @@ Route::apiResource('/users', UserController::class);
 Route::get('/user/{id}','App\Http\Controllers\Api\UserController@getUserById');
 Route::get('/user/pin/{pin}','App\Http\Controllers\Api\UserController@getUserByPin');
 Route::get('/user/{email}/{pin}','App\Http\Controllers\Api\UserController@getUserByEmailAndPin');
-Route::get('/user-door/{doorId}/users', [UserDoorController::class, 'usersByDoor']);
 
 Route::apiResource('/doors', DoorController::class);
 Route::get('/door/{id}','App\Http\Controllers\Api\DoorController@getDoorById');
 
 Route::post('/user-door/attach', [UserDoorController::class, 'attach']);
 Route::post('/user-door/detach', [UserDoorController::class, 'detach']);
+Route::get('/user-door/{doorId}/users', [UserDoorController::class, 'usersByDoor']);
+Route::get('/door-user/{userId}/doors', [UserDoorController::class, 'doorsByUser']);
 Route::post('/check-access', [UserDoorController::class, 'checkAccess']);
 
 Route::get('/total-users', [DashboardController::class, 'totalUsers']);
