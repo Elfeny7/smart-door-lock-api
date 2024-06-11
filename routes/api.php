@@ -36,6 +36,7 @@ Route::post('/logout', App\Http\Controllers\Api\LogoutController::class)->name('
 Route::apiResource('/users', UserController::class);
 Route::get('/user/{id}','App\Http\Controllers\Api\UserController@getUserById');
 Route::get('/user/pin/{pin}','App\Http\Controllers\Api\UserController@getUserByPin');
+Route::get('/user/{email}/{pin}','App\Http\Controllers\Api\UserController@getUserByEmailAndPin');
 Route::get('/user-door/{doorId}/users', [UserDoorController::class, 'usersByDoor']);
 
 Route::apiResource('/doors', DoorController::class);

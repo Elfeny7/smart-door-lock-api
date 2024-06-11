@@ -94,4 +94,15 @@ class UserController extends Controller
 
         return new UserResource(true, 'Data Pengguna Ditemukan berdasarkan PIN!', $user);
     }
+
+    public function getUserByEmailAndPin($email, $pin)
+    {
+        $user = User::where('email', $email)->where('pin', $pin)->first();
+
+        if (!$user) {
+            return response()->json(['message' => 'Pengguna dengan email dan PIN tersebut tidak ditemukan'], 404);
+        }
+
+        return new UserResource(true, 'Data Pengguna Ditemukan berdasarkan email dan PIN!', $user);
+    }
 }

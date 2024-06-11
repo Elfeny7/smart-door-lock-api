@@ -202,4 +202,19 @@ class BigQueryServiceProvider extends ServiceProvider
 
 9. Lalu tambahkan kode seperti yang ada pada LogController.php pada repository ini. Perubahan tersebut adalah menambahkan fungsi untuk menambahkan baris pada bigquery table ketika fungsi store atau post dijalankan, jadi menambahkan baris pada database server sekaligus ke big query.  
 
-10. Push ke main agar di server juga berubah, saya ingatkan lagi jangan lupa mengubah path dari file key.json tadi pada file .env
+10. Push ke main agar di server juga berubah  
+
+11. Setelah push, jangan lupa composer update dan composer install di server.  
+
+12. Upload file key.json tadi ke compute engine gcp  
+
+13. setelah upload, copy file tersebut ke directory project dengan cara  
+```sudo cp /home/ikmalfaris50/key.json /var/www/html/projek/```  
+
+14. isi .env dengan yang tadi
+```
+GOOGLE_APPLICATION_CREDENTIALS=/path/to/your/keyfile.json  
+GOOGLE_PROJECT_ID=YOUR-PROJECT-ID  
+GOOGLE_DATASET_ID=YOUR-DATASET-ID  
+GOOGLE_TABLE_ID=YOUR-TABLE-ID 
+```
