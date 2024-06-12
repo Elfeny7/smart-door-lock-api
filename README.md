@@ -19,7 +19,7 @@ restart apache dengan
 ```sudo apt-get install zip unzip```  
   
 6. install dependency lainnya  
-```sudo apt install phpmyadmin php-mbstring php-zip php-gd php-json php-curl```  
+```sudo apt install php-mbstring php-zip php-gd php-json php-curl php-xml```  
   
 7. install mysql  
 ```sudo apt install mysql-server```  
@@ -69,9 +69,10 @@ cek jika composer sudah terinstall
 ```sudo composer update```  
 ```sudo composer install```  
   
-18. generate key, jwt secret (jika menggunakan jwt), dan migrate
+18. generate key, jwt secret (jika menggunakan jwt), dan migrate  
 ```sudo php artisan key:generate```  
 ```sudo php artisan jwt:secret```  
+```sudo apt-get install php-mysql```  
 ```sudo php artisan migrate```  
 ```sudo php artisan storage:link```  
   
