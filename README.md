@@ -80,8 +80,8 @@ cek jika composer sudah terinstall
 ```sudo php artisan serve --host=0.0.0.0```  
 
 Jika muncul error fatal: detected dubious ownership in repository at '/var/www/html/smart-door-lock-api'  
-```git config --global --add safe.directory /var/www/html/smart-door-lock-api```  
-```git config --global --get safe.directory```  
+```sudo git config --global --add safe.directory /var/www/html/smart-door-lock-api```  
+```sudo git config --global --get safe.directory```  
 
 # Deploy NextJS to GCP  
 1. Install nodejs  
