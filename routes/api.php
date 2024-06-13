@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\DoorController;
 use App\Http\Controllers\Api\UserDoorController;
 use App\Http\Controllers\Api\LogController;
 use App\Http\Controllers\Api\DashboardController;
+use App\Http\Controllers\Api\MobileController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
@@ -53,3 +54,6 @@ Route::get('/total-doors', [DashboardController::class, 'totalDoors']);
 Route::get('/new-users-today', [DashboardController::class, 'newUsersToday']);
 
 Route::apiResource('/logs', LogController::class);
+
+Route::post('/mobile-post', [MobileController::class, 'mobilePost']);
+Route::get('/mobile-get', [MobileController::class, 'mobileGet']);
