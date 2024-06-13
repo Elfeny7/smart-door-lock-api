@@ -12,8 +12,13 @@ class MobileController extends Controller
 {
     public function mobileGet()
     {
-        $mobile = Mobile::latest()->get();
-        return new MobileResource(true, 'List Data Mobile', $mobile);
+        $mobile = Mobile::latest()->first();
+
+        if ($mobile) {
+            return new MobileResource(true, 'Data Mobile Terbaru', $mobile);
+        } else {
+            return new MobileResource(false, 'Data mobile tidak ditemukan', null);
+        }
     }
 
     public function mobilePost(Request $request)
